@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#FFB347">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="جدول أولادي">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<title>🌟 جدول أولادي</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Nunito',sans-serif;background:#FFF8F0;min-height:100vh;overflow-x:hidden}
+body.ltr{direction:ltr}body.rtl{direction:rtl}
+input,select,button,textarea{font-family:'Nunito',sans-serif}
+#app{width:100%;min-height:100vh;display:flex;flex-direction:column}
+.page-body{display:flex;flex:1;min-height:0}
+.sidebar{width:220px;flex-shrink:0;background:#fff;border-left:2px solid #FFE4C4;padding:14px 10px;display:none;flex-direction:column;gap:3px;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto}
+.content{flex:1;overflow-y:auto;min-width:0}
+.ci{max-width:780px;margin:0 auto;padding:0 0 60px}
+.side-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:11px;border:1.5px solid transparent;background:transparent;cursor:pointer;color:#A1887F;font-size:13px;font-weight:800;width:100%;transition:all .15s;white-space:nowrap}
+.side-item:hover{background:#FFF8F0}
+.side-item.active{background:#FFF8E1;border-color:#FFB347;color:#7c5a1e}
+.side-sep{height:1px;background:#FFE4C4;margin:5px 0}
+.side-mode-btn{padding:7px 12px;border-radius:10px;border:1.5px solid #FFE4C4;background:#fff;cursor:pointer;font-weight:800;font-size:12px;color:#A1887F;transition:all .15s;width:100%;text-align:right;margin-bottom:3px}
+.side-mode-btn.active{background:#5D4037;border-color:#5D4037;color:#fff}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;background:#fff;border-bottom:2px solid #FFE4C4;position:sticky;top:0;z-index:50}
+.topbar .logo{font-family:'Fredoka One',cursive;font-size:19px;color:#5D4037}
+.lang-pills{display:flex;background:#FFF3E0;border-radius:50px;padding:3px;gap:2px;border:1.5px solid #FFD580}
+.lang-pills button{font-size:11px;font-weight:800;padding:3px 11px;border-radius:50px;border:none;cursor:pointer;background:transparent;color:#A1887F;transition:all .15s}
+.lang-pills button.active{background:#FFB347;color:#fff}
+.role-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px}
+.role-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:13px;border:2px solid #FFE4C4;background:#fff;cursor:pointer;font-weight:800;font-size:13px;color:#A1887F;transition:all .2s}
+.role-btn.active{border-color:#FFB347;background:#FFF8E1;color:#7c5a1e}
+.section-tabs{display:flex;gap:4px;padding:0 12px 10px;overflow-x:auto;scrollbar-width:none}
+.section-tabs::-webkit-scrollbar{display:none}
+.stab{font-size:12px;font-weight:800;padding:7px 13px;border-radius:50px;border:1.5px solid #FFE4C4;background:#fff;cursor:pointer;color:#A1887F;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.stab.active{background:#FFB347;border-color:#FFB347;color:#fff}
+.kids-row{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none;justify-content:center}
+.kids-row::-webkit-scrollbar{display:none}
+.kid-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 13px;border-radius:15px;border:2.5px solid #FFE4C4;background:#fff;cursor:pointer;min-width:80px;flex-shrink:0;transition:all .2s}
+.kid-card.active{transform:scale(1.04);box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.k-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:25px;border:3px solid #FFB347;background:#FFF8E1;overflow:hidden}
+.k-av img{width:100%;height:100%;object-fit:cover}
+.k-name{font-weight:900;font-size:11px;color:#4E342E;text-align:center}
+.k-pts{font-size:10px;color:#FFB347;font-weight:800}
+.mode-switch{display:flex;gap:8px;padding:0 16px 12px;justify-content:center}
+.mode-btn{flex:1;padding:8px;border-radius:11px;border:2px solid #FFE4C4;background:#fff;cursor:pointer;font-weight:800;font-size:13px;color:#A1887F;transition:all .2s}
+.mode-btn.active{background:#5D4037;border-color:#5D4037;color:#fff}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 10px}
+.scard{background:#fff;border-radius:13px;border:1.5px solid #FFE4C4;padding:9px 6px;text-align:center}
+.scard .sv{font-family:'Fredoka One',cursive;font-size:21px;display:block}
+.scard .sl{font-size:10px;color:#A1887F;font-weight:700}
+.prog-wrap{background:#fff;border-radius:13px;border:1.5px solid #FFE4C4;padding:11px 14px;margin:0 16px 12px}
+.prog-lbl{display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:#8D6E63;margin-bottom:6px}
+.prog-bar{height:11px;background:#FFF3E0;border-radius:50px;overflow:hidden}
+.prog-fill{height:100%;border-radius:50px;background:#FFB347;transition:width .4s ease}
+.day-nav{display:flex;gap:5px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
+.day-nav::-webkit-scrollbar{display:none}
+.day-btn{font-size:12px;font-weight:800;padding:5px 11px;border-radius:50px;border:2px solid #FFE4C4;background:#fff;cursor:pointer;color:#A1887F;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.day-btn.active{background:#FFB347;border-color:#FFB347;color:#fff}
+.day-btn.locked{opacity:.5;cursor:not-allowed}
+.action-row{display:flex;gap:7px;padding:0 16px 10px;flex-wrap:wrap}
+.abtn{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:50px;border:1.5px solid #FFE4C4;background:#fff;color:#4E342E;cursor:pointer;font-weight:800;font-size:12px;transition:all .15s}
+.abtn:active{transform:scale(.96)}
+.abtn.pri{background:#5D4037;border-color:#5D4037;color:#fff}
+.abtn.danger{border-color:#FFCDD2;color:#C62828}
+.sched-list{display:flex;flex-direction:column;gap:7px;padding:0 16px}
+.act-row{display:flex;align-items:center;gap:9px;background:#fff;border-radius:15px;border:1.5px solid #FFE4C4;padding:10px 11px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
+.act-row.done{opacity:.6;background:#F1FFF1;border-color:#C8E6C9}
+.act-row.locked-day{cursor:default;opacity:.75}
+.act-accent{position:absolute;right:0;top:0;bottom:0;width:5px;border-radius:3px 0 0 3px}
+.act-icon{font-size:27px;min-width:33px;text-align:center}
+.act-body{flex:1;min-width:0}
+.act-name{font-weight:900;font-size:13px;color:#3E2723;line-height:1.2}
+.act-name.struck{text-decoration:line-through;color:#A1887F}
+.act-meta{font-size:11px;color:#A1887F;margin-top:2px}
+.act-badge{display:inline-block;font-size:10px;font-weight:800;padding:1px 6px;border-radius:50px}
+.act-badge.fixed{background:#FFF3CD;color:#7c5a1e;border:.5px solid #FFD580}
+.act-badge.free{background:#E3F5FF;color:#1565C0;border:.5px solid #90CAF9}
+.act-pts{font-size:11px;color:#FFB347;font-weight:800;margin-top:2px}
+.picked-chip{display:inline-flex;align-items:center;gap:4px;margin-top:3px;font-size:11px;font-weight:800;color:#fff;padding:2px 8px;border-radius:50px}
+.chk-btn{width:33px;height:33px;border-radius:50%;border:2px solid #FFE4C4;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:all .15s}
+.chk-btn.checked{background:#66BB6A;border-color:#66BB6A;color:#fff}
+.choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;padding:0 16px;margin-bottom:10px}
+.cc-card{border-radius:17px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;border:3px solid transparent;position:relative}
+.cc-card:active{transform:scale(.96)}
+.cc-card.picked{border-color:rgba(255,255,255,.8)}
+.cc-emoji{font-size:36px;display:block;margin-bottom:7px}
+.cc-label{font-weight:900;font-size:13px;color:#fff;line-height:1.3}
+.cc-check{position:absolute;top:7px;left:7px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.9);color:#66BB6A;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0;transition:opacity .2s}
+.cc-card.picked .cc-check{opacity:1}
+.reward-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;padding:0 16px 12px}
+.rcard{background:#fff;border-radius:15px;border:1.5px solid #FFE4C4;padding:14px 9px;text-align:center;position:relative;transition:all .2s}
+.rcard.unlocked{border-color:#66BB6A;background:#F1FFF1}
+.rcard.claimed{opacity:.6}
+.r-icon{font-size:34px;display:block;margin-bottom:5px}
+.r-name{font-weight:900;font-size:12px;color:#3E2723;margin-bottom:3px}
+.r-pts{font-size:11px;color:#A1887F}
+.r-claim{margin-top:7px;background:#5D4037;color:#fff;border:none;border-radius:50px;padding:5px 14px;font-size:11px;font-weight:800;cursor:pointer;width:100%}
+.r-del{display:block;background:none;border:none;cursor:pointer;font-size:10px;color:#FFCDD2;margin-top:3px;width:100%}
+.unlocked-badge{position:absolute;top:-7px;right:-7px;background:#66BB6A;color:#fff;border-radius:50px;padding:2px 7px;font-size:9px;font-weight:900}
+.day-cells{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-top:7px}
+.dcell{border-radius:7px;padding:5px 1px;text-align:center}
+.dcell .dn{font-size:9px;color:#A1887F;font-weight:700}
+.dcell .dp{font-size:13px;font-weight:900}
+.cat-bar-row{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.cbl{min-width:70px;color:#8D6E63;font-weight:700;font-size:11px;text-align:right}
+.cbout{flex:1;height:9px;background:#FFF3E0;border-radius:50px;overflow:hidden}
+.cbin{height:100%;border-radius:50px}
+.cbval{min-width:18px;font-size:11px;font-weight:800;color:#4E342E}
+.sec-card{background:#fff;border-radius:15px;border:1.5px solid #FFE4C4;padding:14px;margin:0 16px 11px}
+.sec-card h4{font-family:'Fredoka One',cursive;font-size:15px;color:#5D4037;margin-bottom:9px}
+.fg{margin-bottom:9px}
+.fg label{display:block;font-size:11px;font-weight:800;color:#8D6E63;margin-bottom:3px}
+.fg input,.fg select{width:100%;padding:8px 11px;border-radius:11px;border:1.5px solid #FFE4C4;background:#FFF8F0;font-size:13px;color:#3E2723;outline:none}
+.fg input:focus,.fg select:focus{border-color:#FFB347}
+.egrid{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+.ebtn{font-size:19px;width:34px;height:34px;border-radius:8px;border:1.5px solid #FFE4C4;background:#FFF8F0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .13s}
+.ebtn.sel{border-color:#FFB347;background:#FFF3E0;transform:scale(1.1)}
+.color-dots{display:flex;gap:7px;flex-wrap:wrap;margin-top:3px}
+.cdot{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.cdot.sel{border-color:#333;transform:scale(1.15)}
+.modal-acts{display:flex;gap:7px;margin-top:12px}
+.modal-acts button{flex:1;padding:9px;border-radius:50px;font-weight:800;font-size:13px;cursor:pointer;border:none}
+.bcnl{background:#FFF8F0;border:1.5px solid #FFE4C4 !important;color:#8D6E63}
+.bsave{background:#5D4037;color:#fff}
+.bdel{width:100%;padding:8px;border-radius:50px;background:#FFEBEE;border:1.5px solid #FFCDD2;color:#C62828;font-weight:800;font-size:12px;cursor:pointer;margin-top:5px}
+.choices-panel{background:#FFF8F0;border-radius:11px;padding:11px;border:1.5px solid #FFE4C4;margin-top:7px}
+.choices-panel h5{font-size:12px;font-weight:800;color:#8D6E63;margin-bottom:7px}
+.c-edit-row{display:flex;align-items:center;gap:5px;padding:5px 7px;background:#fff;border-radius:9px;margin-bottom:4px;border:1px solid #FFE4C4}
+.c-preview{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.c-text{flex:1;font-size:12px;font-weight:700;color:#3E2723}
+.c-ctrl{background:none;border:none;cursor:pointer;font-size:14px;color:#A1887F;padding:2px}
+.add-c-row{display:flex;gap:5px;margin-top:7px}
+.add-c-row input{flex:1;font-size:12px}
+.modal-overlay{position:fixed;inset:0;background:rgba(62,39,35,.4);display:flex;align-items:flex-end;justify-content:center;z-index:200}
+.modal-sheet{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:500px;padding:18px 16px 28px;max-height:92vh;overflow-y:auto;animation:slideUp .22s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-sheet h3{font-family:'Fredoka One',cursive;font-size:19px;color:#5D4037;text-align:center;margin-bottom:14px}
+.drag-bar{width:38px;height:4px;background:#FFE4C4;border-radius:50px;margin:0 auto 14px}
+.lock-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center}
+.lock-icon{font-size:58px;margin-bottom:12px;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.lock-title{font-family:'Fredoka One',cursive;font-size:21px;color:#5D4037;margin-bottom:4px}
+.lock-sub{font-size:13px;color:#A1887F;margin-bottom:18px}
+.pin-dots{display:flex;gap:11px;justify-content:center;margin-bottom:18px}
+.pin-dot{width:17px;height:17px;border-radius:50%;border:2.5px solid #FFB347;background:transparent;transition:all .2s}
+.pin-dot.filled{background:#FFB347}
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;max-width:230px}
+.np-btn{font-family:'Fredoka One',cursive;font-size:22px;padding:14px;border-radius:14px;border:2px solid #FFE4C4;background:#fff;cursor:pointer;color:#3E2723;transition:all .15s;text-align:center}
+.np-btn:active{background:#FFF8E1;transform:scale(.93)}
+.np-btn.invis{opacity:0;pointer-events:none}
+.pin-err{color:#E53935;font-size:12px;font-weight:800;min-height:18px;margin-top:7px;animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.ks-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #FFF3E0}
+.ks-row:last-child{border-bottom:none}
+.ks-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:3px solid;overflow:hidden;flex-shrink:0}
+.ks-av img{width:100%;height:100%;object-fit:cover}
+.ks-body{flex:1;min-width:0}
+.ks-name{font-weight:900;font-size:13px;color:#3E2723}
+.ks-sub{font-size:10px;color:#A1887F;margin-top:1px}
+.ks-btns{display:flex;gap:4px}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #FFF3E0;font-size:13px;font-weight:800;color:#3E2723}
+.tog-row:last-child{border-bottom:none}
+.tog{width:40px;height:22px;background:#FFE4C4;border-radius:50px;border:none;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.tog.on{background:#66BB6A}
+.tog::after{content:'';position:absolute;top:3px;right:3px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:right .2s}
+.tog.on::after{right:21px}
+.rw-banner{margin:0 16px 9px;border-radius:13px;padding:11px;text-align:center;display:none;background:#FFF8E1;border:2px solid #FFB347}
+.rw-banner.show{display:block;animation:bpop .3s ease}
+.rw-txt{font-family:'Fredoka One',cursive;font-size:16px;color:#7c5a1e}
+@keyframes bpop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.cel-fx{position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);font-size:60px;z-index:999;pointer-events:none;animation:celPop 1.3s ease forwards}
+@keyframes celPop{0%{transform:translate(-50%,-50%) scale(0);opacity:1}50%{transform:translate(-50%,-95%) scale(1.3);opacity:1}100%{transform:translate(-50%,-150%) scale(.8);opacity:0}}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 20px;color:#A1887F}
+.spin{width:34px;height:34px;border:4px solid #FFE4C4;border-top-color:#FFB347;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-s{text-align:center;padding:28px 20px;color:#A1887F}
+.empty-s .ei{font-size:40px;display:block;margin-bottom:8px}
+.child-hdr{text-align:center;padding:14px 16px 8px}
+.child-big-av{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:35px;border:4px solid;margin:0 auto 9px;overflow:hidden}
+.child-big-av img{width:100%;height:100%;object-fit:cover}
+.child-name-lbl{font-family:'Fredoka One',cursive;font-size:24px}
+.child-day-lbl{font-size:12px;color:#A1887F;margin-top:1px}
+.week-bar{display:flex;align-items:center;gap:8px;padding:4px 16px 10px;font-size:12px;color:#A1887F;font-weight:700}
+.week-badge{background:#FFF3E0;border:1.5px solid #FFD580;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:800;color:#7c5a1e}
+.photo-lbl{display:inline-flex;align-items:center;gap:4px;background:#FFF3E0;border:1.5px solid #FFB347;border-radius:50px;padding:5px 11px;font-size:12px;font-weight:800;color:#5D4037;cursor:pointer}
+.hint{font-size:11px;color:#C4A882;text-align:center;padding:8px 16px 4px}
+@media(min-width:768px){
+  .sidebar{display:flex}
+  .role-switch,.section-tabs{display:none}
+  .ci{padding:18px 26px 60px}
+  .kids-row,.mode-switch,.day-nav,.action-row,.sched-list,.reward-grid{padding-left:0;padding-right:0}
+  .stats3,.prog-wrap,.sec-card,.rw-banner,.week-bar,.hint{padding-left:0;padding-right:0;margin-left:0;margin-right:0}
+}
+@media(max-width:767px){.ci{padding:0 0 60px}}
+</style>
+</head>
+<body class="rtl">
+<div id="app"><div class="loading"><div class="spin"></div><p>جار التحميل...</p></div></div>
+<script>
+// ════ CONSTANTS ════
+const CAT_COLORS={duty:'#FF8FAB',study:'#7986CB',sport:'#66BB6A',fun:'#FFB347',family:'#F06292',sleep:'#B39DDB',meal:'#FF8A65',course:'#4DB6AC',club:'#64B5F6',worship:'#A5D6A7'};
+const CAT_EMOJIS={duty:['🧹','🛏️','🧺','🚿','🪥','📋','🏠'],study:['📚','✏️','📖','🔬','🎓','💡','📐'],sport:['⚽','🏊','🚴','🤸','🏃','🎾','⛹️'],fun:['🎮','🎨','🧩','📱','🎵','🎭','🎪'],family:['❤️','🤗','👨‍👩‍👦','🏡','🍕','🎉','🥰'],sleep:['😴','🌙','💤','🛌','⭐','🌟','☁️'],meal:['🍽️','🥗','🍎','🥞','🍜','🥪','🍉'],course:['🎓','🎸','🎨','💻','🌍','🏛️','🔭'],club:['🏊','⛷️','🎭','🏋️','🎯','🏸','🧗'],worship:['🤲','📿','📖','🕌','⭐','🌙','✨']};
+const CHOICE_COLORS=['#FF8FAB','#FFB347','#7986CB','#66BB6A','#4DB6AC','#F06292','#64B5F6','#FF8A65','#B39DDB','#FF7043','#26C6DA','#EC407A'];
+const CHOICE_EMOJIS=['📖','🎮','⚽','🎨','🎵','🧩','🎭','🏃','🌍','🎬','🍕','🚴','🎸','🏊','✏️','🦋','🌈','🚀','🎯','🦄'];
+const KID_COLORS=['#FFB347','#87CEEB','#FF8FAB','#7BC67E','#B39DDB','#FF8A65'];
+const KID_BGS=['#FFF8E1','#E3F2FD','#FCE4EC','#E8F5E9','#EDE7F6','#FBE9E7'];
+const KID_AVATARS=['👦','🧒','👧','🐯','🦁','🐻','🐸','🐼','🦊','🐨','🦄','🐮'];
+const REWARD_EMOJIS=['🎮','🍕','🎬','🎡','🏖️','🎂','🧸','🎁','🚴','🎸','📱','🍦','🎯','🏅','👟','🎀'];
+const DAYS_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const DAYS_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const T={
+  ar:{parent:'داشبورد الوالدين',child:'شاشة الأطفال',schedule:'📅 الجدول',rewards:'🏆 المكافآت',report:'📈 التقرير',settings:'⚙️ الإعدادات',summer:'☀️ إجازة',school:'🎒 مدرسة',addAct:'➕ نشاط جديد',clearDay:'🗑️ مسح اليوم',todayProg:'تقدم اليوم',tasks:'المهام',pts:'النقاط',total:'الإجمالي',save:'✅ حفظ',cancel:'إلغاء',del:'🗑️ حذف',fixed:'إلزامي',free:'حر',isFree:'نشاط حر (الطفل يختار)',choices:'خيارات الطفل',addChoice:'اكتب خياراً...',add:'إضافة',applyTo:'تطبيق على',today:'اليوم فقط',allDays:'كل الأيام',weekdays:'أيام الأسبوع',weekend:'عطلة',actName:'اسم النشاط',time:'الوقت',dur:'المدة (دقيقة)',cat:'النوع',emoji:'الرمز',points:'النقاط',chooseKid:'مين يلعب اليوم؟',backParent:'رجوع للداشبورد',pickAct:'اختر نشاطك! 🎉',noPicks:'لا توجد خيارات بعد',currPts:'نقاطك الحالية',unlocked:'🔓 مفتوح!',claim:'🎉 استلم',claimed:'✅ تم',needs:'يحتاج ⭐',newReward:'جائزة جديدة',rName:'اسم الجائزة',rPts:'النقاط',addRw:'➕ إضافة',kids:'الأولاد',newKid:'ولد جديد',addKid:'➕ إضافة',kidPin:'رقم سري للطفل',lockSub:'أدخل الرمز السري',wrongPin:'رمز خاطئ!',setPin:'تعيين رمز سري',setPinSub:'أدخل 4 أرقام',confirmPin:'أكد الرمز',pinSaved:'تم حفظ الرمز ✅',pinMismatch:'الرمزان مختلفان',changePin:'🔑 تغيير الرمز',removePin:'🔓 إزالة القفل',sounds:'🎵 الأصوات',soundOn:'تشغيل الأصوات',vol:'الصوت',dailyPerf:'الأداء اليومي',actDist:'توزيع الأنشطة',print:'🖨️ طباعة',color:'اللون',avatar:'الصورة الرمزية',editKid:'تعديل',
+    newWeek:'📅 أسبوع جديد',newWeekTitle:'بدء أسبوع جديد',newWeekLabel:'اسم الأسبوع',newWeekCopy:'انسخ هيكل الأسبوع الحالي',newWeekCreate:'🚀 إنشاء الأسبوع',currentWeek:'الأسبوع الحالي',weekHistory:'سجل الأسابيع',lockedDay:'يوم منتهي - للقراءة فقط',
+    cats:{duty:'📋 واجب',study:'📚 دراسة',sport:'⚽ رياضة',fun:'🎮 ترفيه',family:'❤️ عائلة',sleep:'😴 راحة',meal:'🍽️ وجبة',course:'🎓 كورس',club:'🏊 نادي',worship:'🤲 عبادة'}},
+  en:{parent:'Parent Dashboard',child:"Kid's Screen",schedule:'📅 Schedule',rewards:'🏆 Rewards',report:'📈 Report',settings:'⚙️ Settings',summer:'☀️ Summer',school:'🎒 School',addAct:'➕ Add Activity',clearDay:'🗑️ Clear Day',todayProg:"Today's Progress",tasks:'Tasks',pts:'Points',total:'Total',save:'✅ Save',cancel:'Cancel',del:'🗑️ Delete',fixed:'Fixed',free:'Free',isFree:'Free activity (kid chooses)',choices:"Kid's choices",addChoice:'Add a choice...',add:'Add',applyTo:'Apply to',today:'Today only',allDays:'All days',weekdays:'Weekdays',weekend:'Weekend',actName:'Activity name',time:'Time',dur:'Duration (min)',cat:'Category',emoji:'Icon',points:'Points',chooseKid:"Who's playing today?",backParent:'Back to Dashboard',pickAct:'Choose your activity! 🎉',noPicks:'No choices added yet',currPts:'Your current points',unlocked:'🔓 Unlocked!',claim:'🎉 Claim',claimed:'✅ Claimed',needs:'Needs ⭐',newReward:'New Reward',rName:'Reward name',rPts:'Points',addRw:'➕ Add',kids:'Kids',newKid:'New kid',addKid:'➕ Add Kid',kidPin:'Kid PIN (4 digits)',lockSub:'Enter your PIN',wrongPin:'Wrong PIN!',setPin:'Set PIN',setPinSub:'Enter 4 digits',confirmPin:'Confirm PIN',pinSaved:'PIN saved ✅',pinMismatch:"PINs don't match",changePin:'🔑 Change PIN',removePin:'🔓 Remove Lock',sounds:'🎵 Sounds',soundOn:'Enable sounds',vol:'Volume',dailyPerf:'Daily Performance',actDist:'Activity Breakdown',print:'🖨️ Print',color:'Color',avatar:'Avatar',editKid:'Edit',
+    newWeek:'📅 New Week',newWeekTitle:'Start New Week',newWeekLabel:'Week name',newWeekCopy:'Copy current week structure',newWeekCreate:'🚀 Create Week',currentWeek:'Current Week',weekHistory:'Week History',lockedDay:'Past day - read only',
+    cats:{duty:'📋 Chore',study:'📚 Study',sport:'⚽ Sport',fun:'🎮 Fun',family:'❤️ Family',sleep:'😴 Rest',meal:'🍽️ Meal',course:'🎓 Course',club:'🏊 Club',worship:'🙏 Worship'}}
+};
+
+// ════ STATE ════
+let lang='ar', role='home', parentUnlocked=false;
+let kids=[], settings={sound:true,volume:0.6,parent_pin:null};
+let activeKid=null, activeTab='schedule', activeDay=0, activeMode='summer';
+let rewardKid=null, reportKid=null, childKid=null;
+let activeWeek=null; // {id, week_number, mode, label, is_active}
+let points={};
+let pinBuf='', pinStep='enter', pinFirst='';
+let editActId=null, selEmoji='⭐', isFreeAct=false, tempChoices=[];
+let selRwEmoji='🎁', selKidAvatar='👦', selKidColor=KID_COLORS[0];
+let newCEmoji=CHOICE_EMOJIS[0], newCColor=CHOICE_COLORS[0];
+let freeChoiceId=null, editKidId=null;
+let _ekAvatar=null, _ekColor=null, _ekPhoto=null, _ekBgIdx=null;
+
+// Today's day index (0=Sun)
+const TODAY_DAY = new Date().getDay();
+
+// Get safe active day based on mode
+function getSafeDay(mode){
+  const maxDay = mode === 'school' ? 4 : 6; // school: 0-4, summer: 0-6
+  return Math.min(TODAY_DAY, maxDay);
+}
+
+// ════ API ════
+async function api(method, path, body){
+  const opts={method, headers:{'Content-Type':'application/json'}};
+  if(body) opts.body=JSON.stringify(body);
+  const r=await fetch(path, opts);
+  if(!r.ok){const e=await r.text();throw new Error(e);}
+  return r.json();
+}
+const GET=p=>api('GET',p);
+const POST=(p,b)=>api('POST',p,b);
+const PUT=(p,b)=>api('PUT',p,b);
+const DEL=p=>api('DELETE',p);
+
+// ════ AUDIO ════
+let audioCtx=null;
+function getCtx(){if(!audioCtx)try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}return audioCtx;}
+function tone(f,d,type='sine',v=0.4){if(!settings.sound)return;try{const ctx=getCtx();if(!ctx)return;const o=ctx.createOscillator(),g=ctx.createGain();const vol=(settings.volume||0.6)*v;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+d);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+d);}catch(e){}}
+const sndOk=()=>{tone(660,.08,'sine',.5);setTimeout(()=>tone(880,.15,'sine',.5),80)};
+const sndWin=()=>[440,554,660,880].forEach((f,i)=>setTimeout(()=>tone(f,.18,'sine',.4),i*80));
+const sndPick=()=>tone(740,.12,'sine',.35);
+const sndUnlock=()=>[330,440,550].forEach((f,i)=>setTimeout(()=>tone(f,.15,'triangle',.3),i*60));
+const sndWrong=()=>tone(200,.3,'sawtooth',.3);
+const sndKey=()=>tone(600,.06,'sine',.2);
+
+// ════ HELPERS ════
+const t=k=>T[lang][k]||T.ar[k]||k;
+const kn=k=>(lang==='en'&&k.name_en?k.name_en:k.name)||k.name;
+const getDays=()=>{const d=lang==='ar'?DAYS_AR:DAYS_EN;return activeMode==='summer'?d:d.slice(0,5);};
+function setCSS(kid){const k=kids.find(x=>x.id===kid);if(k){document.documentElement.style.setProperty('--kc',k.color);document.documentElement.style.setProperty('--kb',k.bg);}}
+function cel(pts){const el=document.createElement('div');el.className='cel-fx';el.textContent=pts>=10?'🏆':pts>=5?'⭐':'✅';document.body.appendChild(el);setTimeout(()=>el.remove(),1400);}
+function showLoading(el){if(el)el.innerHTML='<div class="loading"><div class="spin"></div></div>';}
+
+// Is a day locked? (past days in current week are locked for kids, parents can always edit)
+function isDayLocked(dayIdx, forKid=false){
+  if(!forKid) return false;
+  if(!activeWeek?.is_active) return true;
+  return dayIdx !== getSafeDay(activeMode); // kids: only today is unlocked
+}
+
+// ════ INIT ════
+async function init(){
+  try{
+    const [ks, ss] = await Promise.all([GET('/api/kids'), GET('/api/settings')]);
+    kids=ks;
+    settings={
+      sound: ss.sound!==false && ss.sound!=='false',
+      volume: parseFloat(ss.volume)||0.6,
+      parent_pin: ss.parent_pin||null,
+    };
+    lang=ss.lang||'ar';
+    activeMode=ss.mode||'summer';
+    document.body.className=lang==='ar'?'rtl':'ltr';
+    document.documentElement.lang=lang;
+    if(kids.length){
+      activeKid=kids[0].id;
+      rewardKid=kids[0].id;
+      reportKid=kids[0].id;
+    }
+    activeDay=getSafeDay(activeMode); // start on today
+    await loadPoints();
+    if(activeKid) await loadActiveWeek(activeKid, activeMode);
+    parentUnlocked=!settings.parent_pin;
+    role='home';
+    renderApp();
+    // Poll every 15s for real-time sync
+    setInterval(pollSync, 15000);
+  }catch(e){
+    document.getElementById('app').innerHTML=`<div class="loading"><p style="color:#E53935;font-weight:800;text-align:center">⚠️ فشل الاتصال!<br><br>تأكد أن السيرفر شغال</p></div>`;
+  }
+}
+
+async function loadPoints(){
+  const oldTotal=Object.values(points).reduce((s,v)=>s+v,0);
+  await Promise.all(kids.map(async k=>{
+    try{const r=await GET(`/api/kids/${k.id}/points`);points[k.id]=r.total||0;}catch(e){points[k.id]=0;}
+  }));
+  const newTotal=Object.values(points).reduce((s,v)=>s+v,0);
+  // If points changed and viewing rewards/report, trigger re-render
+  if(newTotal!==oldTotal && role==='parent' && parentUnlocked){
+    if(activeTab==='rewards') renderRewards();
+    else if(activeTab==='report') renderReport();
+  }
+}
+
+async function loadActiveWeek(kidId, mode){
+  const w=await GET(`/api/weeks/active?kid_id=${kidId}&mode=${mode}`);
+  activeWeek=w;
+  return w;
+}
+
+let lastPollHash = {};
+let pollInitialized = false;
+async function pollSync(){
+  try{
+    await loadPoints();
+    if(role==='parent'&&parentUnlocked&&activeWeek){
+      const sc=await GET(`/api/activities?week_id=${activeWeek.id}&day_index=${activeDay}`);
+      // Hash: done + picked_choice text (handles null→value change)
+      const hash=sc.map(a=>`${a.id}:${a.done?1:0}:${a.picked_choice?a.picked_choice.text:''}`).join('|');
+      const key=`p_${activeWeek.id}_${activeDay}`;
+      const changed=lastPollHash[key]!==hash;
+      lastPollHash[key]=hash;
+      if(changed){
+        if(activeTab==='schedule') renderSchedule();
+        else if(activeTab==='rewards') renderRewards();
+        else if(activeTab==='report') renderReport();
+        else updateStatsOnly(sc);
+      } else {
+        // Always update points display even if activities unchanged
+        updateStatsOnly(sc);
+        // Update rewards points display silently
+        if(activeTab==='rewards'){
+          const ptsEl=document.querySelector('.sec-card [style*="font-size:36px"]');
+          if(ptsEl) ptsEl.textContent=points[rewardKid]||0;
+        }
+      }
+    } else if(role==='child'&&childKid){
+      const cw=await GET(`/api/weeks/active?kid_id=${childKid}&mode=${activeMode}`);
+      if(!cw)return;
+      const sc=await GET(`/api/activities?week_id=${cw.id}&day_index=${activeDay}`);
+      const hash=sc.map(a=>`${a.id}:${a.done?1:0}:${a.picked_choice?a.picked_choice.text:''}`).join('|');
+      const key=`c_${cw.id}_${activeDay}`;
+      const changed=lastPollHash[key]!==hash;
+      lastPollHash[key]=hash;
+      if(changed) renderChildScreen();
+      else updateChildStatsOnly(sc);
+    }
+  }catch(e){}
+}
+
+function updateStatsOnly(sc){
+  const done=sc.filter(a=>a.done).length;
+  const dayPts=sc.filter(a=>a.done).reduce((s,a)=>s+(a.points||0),0);
+  const pct=sc.length?Math.round(done/sc.length*100):0;
+  const kid=kids.find(k=>k.id===activeKid);
+  ['sv-tasks','sv-pts','sv-total'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=[`${done}/${sc.length}`,dayPts,points[activeKid]||0][i];
+  });
+  const pf=document.getElementById('progFill');
+  const pp=document.getElementById('progPct');
+  if(pf) pf.style.width=pct+'%';
+  if(pp) pp.textContent=pct+'%';
+}
+function updateChildStatsOnly(sc){
+  const done=sc.filter(a=>a.done).length;
+  const dayPts=sc.filter(a=>a.done).reduce((s,a)=>s+(a.points||0),0);
+  const pct=sc.length?Math.round(done/sc.length*100):0;
+  ['csv-tasks','csv-pts','csv-total'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent=[`${done}/${sc.length}`,dayPts,points[childKid]||0][i];
+  });
+  const pf=document.getElementById('cprogFill');
+  const pp=document.getElementById('cprogPct');
+  if(pf) pf.style.width=pct+'%';
+  if(pp) pp.textContent=pct+'%';
+}
+
+// ════ MAIN RENDER ════
+function renderApp(){
+  const app=document.getElementById('app');
+  if(!app)return;
+  if(role==='home'){renderHomeScreen();return;}
+  if(role==='picker'||role==='child'){renderChildFlow();return;}
+  if(!parentUnlocked){renderLockScreen();return;}
+  setCSS(activeKid);
+  app.innerHTML=`
+    <div class="topbar">
+      <span class="logo">🌟 ${lang==='ar'?'جدول أولادي':'My Kids'}</span>
+      <div class="lang-pills">
+        <button class="${lang==='ar'?'active':''}" onclick="changeLang('ar')">عربي</button>
+        <button class="${lang==='en'?'active':''}" onclick="changeLang('en')">EN</button>
+      </div>
+    </div>
+    <div class="page-body">
+      <div class="sidebar">
+        <div style="font-size:10px;font-weight:800;color:#C4A882;padding:3px 12px 6px">${lang==='ar'?'الوضع':'MODE'}</div>
+        <button class="side-mode-btn ${activeMode==='summer'?'active':''}" onclick="setMode('summer')">${t('summer')}</button>
+        <button class="side-mode-btn ${activeMode==='school'?'active':''}" onclick="setMode('school')">${t('school')}</button>
+        <div class="side-sep"></div>
+        <div style="font-size:10px;font-weight:800;color:#C4A882;padding:3px 12px 6px">${lang==='ar'?'القائمة':'MENU'}</div>
+        <button class="side-item ${activeTab==='schedule'?'active':''}" onclick="switchTab('schedule')">📅 ${t('schedule')}</button>
+        <button class="side-item ${activeTab==='rewards'?'active':''}" onclick="switchTab('rewards')">🏆 ${t('rewards')}</button>
+        <button class="side-item ${activeTab==='report'?'active':''}" onclick="switchTab('report')">📈 ${t('report')}</button>
+        <button class="side-item ${activeTab==='settings'?'active':''}" onclick="switchTab('settings')">⚙️ ${t('settings')}</button>
+        <div class="side-sep"></div>
+        <button class="side-item" onclick="goKidsScreen()">😊 ${t('child')}</button>
+      </div>
+      <div class="content">
+        <div class="ci">
+          <div class="role-switch">
+            <button class="role-btn active">🛡️ ${t('parent')}</button>
+            <button class="role-btn" onclick="goKidsScreen()">😊 ${t('child')}</button>
+          </div>
+          <div class="section-tabs">
+            <button class="stab ${activeTab==='schedule'?'active':''}" onclick="switchTab('schedule')">${t('schedule')}</button>
+            <button class="stab ${activeTab==='rewards'?'active':''}" onclick="switchTab('rewards')">${t('rewards')}</button>
+            <button class="stab ${activeTab==='report'?'active':''}" onclick="switchTab('report')">${t('report')}</button>
+            <button class="stab ${activeTab==='settings'?'active':''}" onclick="switchTab('settings')">${t('settings')}</button>
+          </div>
+          <div id="tabBody"></div>
+        </div>
+      </div>
+    </div>`;
+  renderTab();
+}
+
+function switchTab(tab){
+  activeTab=tab;
+  lastPollHash={};  // reset so poll detects changes fresh
+  renderApp();
+}
+function changeLang(l){lang=l;document.body.className=l==='ar'?'rtl':'ltr';document.documentElement.lang=l;POST('/api/settings',{key:'lang',value:l});renderApp();}
+
+function renderTab(){
+  if(activeTab==='schedule') renderSchedule();
+  else if(activeTab==='rewards') renderRewards();
+  else if(activeTab==='report') renderReport();
+  else renderSettings();
+}
+
+// ════ SCHEDULE TAB ════
+async function renderSchedule(){
+  const body=document.getElementById('tabBody');
+  if(!body)return;
+  showLoading(body);
+  // Load active week if changed
+  await loadActiveWeek(activeKid, activeMode);
+  if(!activeWeek){
+    body.innerHTML=`<div class="empty-s"><span class="ei">📅</span><p>${lang==='ar'?'لا يوجد أسبوع نشط':'No active week'}</p></div>`;
+    return;
+  }
+  const sc=await GET(`/api/activities?week_id=${activeWeek.id}&day_index=${activeDay}`);
+  await loadPoints();
+  const kid=kids.find(k=>k.id===activeKid);
+  const done=sc.filter(a=>a.done).length;
+  const dayPts=sc.filter(a=>a.done).reduce((s,a)=>s+(a.points||0),0);
+  const pct=sc.length?Math.round(done/sc.length*100):0;
+  const days=getDays();
+
+  body.innerHTML=`
+    <div class="mode-switch">
+      <button class="mode-btn ${activeMode==='summer'?'active':''}" onclick="setMode('summer')">${t('summer')}</button>
+      <button class="mode-btn ${activeMode==='school'?'active':''}" onclick="setMode('school')">${t('school')}</button>
+    </div>
+    ${kidsRowHTML(activeKid,'parentKidClick')}
+    <div class="week-bar">
+      <span class="week-badge">📅 ${activeWeek.label||'الأسبوع'}</span>
+      <span style="flex:1"></span>
+      <button class="abtn" onclick="openNewWeekModal()" style="font-size:11px;padding:5px 10px">${t('newWeek')}</button>
+    </div>
+    <div class="stats3">
+      <div class="scard"><span class="sv" id="sv-tasks" style="color:${kid.color}">${done}/${sc.length}</span><span class="sl">${t('tasks')}</span></div>
+      <div class="scard"><span class="sv" id="sv-pts" style="color:${kid.color}">${dayPts}</span><span class="sl">${t('pts')}</span></div>
+      <div class="scard"><span class="sv" id="sv-total" style="color:${kid.color}">${points[activeKid]||0}</span><span class="sl">${t('total')}</span></div>
+    </div>
+    <div id="rwBanner" class="rw-banner"></div>
+    <div class="prog-wrap">
+      <div class="prog-lbl"><span>${t('todayProg')}</span><span id="progPct">${pct}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:${pct}%;background:${kid.color}"></div></div>
+    </div>
+    <div class="day-nav">
+      ${days.map((d,i)=>`<button class="day-btn ${i===activeDay?'active':''}" style="${i===activeDay?`background:${kid.color};border-color:${kid.color}`:''}" onclick="activeDay=${i};lastPollHash={};renderSchedule()">${d}</button>`).join('')}
+    </div>
+    <div class="action-row">
+      <button class="abtn pri" onclick="openActModal(null)">${t('addAct')}</button>
+      <button class="abtn" onclick="doClearDay()">${t('clearDay')}</button>
+    </div>
+    <div class="sched-list">
+      ${sc.length?sc.map(a=>actRowHTML(a,kid.color,false)).join(''):`<div class="empty-s"><span class="ei">🌟</span><p>${lang==='ar'?'لا توجد أنشطة':'No activities'}</p></div>`}
+    </div>
+    <div class="hint">💡 ${lang==='ar'?'اضغط على النشاط للتعديل':'Tap activity to edit'}</div>`;
+}
+
+function actRowHTML(a, kidColor, forKid=false){
+  const col=CAT_COLORS[a.category]||'#FFB347';
+  const [h,m]=a.time_val.split(':');const hr=parseInt(h);
+  const ts=lang==='ar'?`${hr%12||12}:${m}${hr>=12?'م':'ص'}`:a.time_val;
+  const nm=lang==='en'&&a.name_en?a.name_en:a.name;
+  const locked=forKid&&isDayLocked(a.day_index!==undefined?a.day_index:activeDay, true);
+
+  // Parent sees: all choice options + what kid picked (if any)
+  const pills=a.is_free&&a.choices&&a.choices.length?
+    `<div style="display:flex;flex-wrap:wrap;gap:3px;margin-top:3px">
+      ${a.choices.map(c=>`<span style="font-size:10px;background:${c.color};color:#fff;border-radius:50px;padding:1px 6px;font-weight:800;opacity:${a.picked_choice?.text===c.text?1:0.5}">${c.emoji} ${c.text}${a.picked_choice?.text===c.text?' ✓':''}</span>`).join('')}
+    </div>`:
+    '';
+  // Kid sees: picked choice chip + pick button
+  const picked=a.picked_choice?`<div class="picked-chip" style="background:${a.picked_choice.color||col}">${a.picked_choice.emoji||''} ${a.picked_choice.text}</div>`:'';
+  const freeBtn=forKid&&a.is_free&&!a.done&&!locked?
+    `<button onclick="event.stopPropagation();freeChoiceId=${a.id};renderChildScreen()" style="background:${kidColor};color:#fff;border:none;border-radius:50px;padding:3px 10px;font-size:11px;font-weight:800;cursor:pointer;margin-top:3px;display:inline-block">${a.picked_choice?`🔄`:`🎯 ${lang==='ar'?'اختر':'Pick'}`}</button>`:'';
+
+  const onclick=forKid?(locked?'':`childToggle(${a.id})`):`openActModal(${a.id})`;
+  return `<div class="act-row ${a.done?'done':''} ${locked?'locked-day':''}" ${onclick?`onclick="${onclick}"`:''}>
+    <div class="act-accent" style="background:${col}"></div>
+    <div class="act-icon">${a.emoji}</div>
+    <div class="act-body">
+      <div class="act-name ${a.done?'struck':''}">${nm} ${locked?`<span style="font-size:10px;color:#FFB347">🔒</span>`:''}</div>
+      <div class="act-meta">${ts} · ${a.duration}${lang==='ar'?'د':'m'} · <span class="act-badge ${a.is_free?'free':'fixed'}">${a.is_free?t('free'):t('fixed')}</span></div>
+      ${forKid?picked+freeBtn:pills}
+      ${a.points>0?`<div class="act-pts">⭐ +${a.points}</div>`:''}
+    </div>
+    ${!locked?`<button class="chk-btn ${a.done?'checked':''}" onclick="event.stopPropagation();${forKid?`childToggle(${a.id})`:`parentToggle(${a.id},${a.done})`}">${a.done?'✓':''}</button>`:''}
+  </div>`;
+}
+
+function parentKidClick(id){activeKid=id;setCSS(id);activeWeek=null;renderSchedule();}
+async function setMode(m){
+  activeMode=m;
+  activeDay=getSafeDay(m); // stay on safe day for this mode
+  activeWeek=null;
+  POST('/api/settings',{key:'mode',value:m});
+  renderApp();
+}
+
+async function parentToggle(id, currentDone){
+  if(!activeWeek) return;
+  await PUT(`/api/activities/${id}`, {done: !currentDone});
+  await loadPoints();
+  if(!currentDone) sndOk();
+  renderSchedule();
+}
+
+async function doClearDay(){
+  if(!confirm(lang==='ar'?'مسح أنشطة هذا اليوم؟':'Clear this day?'))return;
+  if(!activeWeek)return;
+  await DEL(`/api/activities?week_id=${activeWeek.id}&day_index=${activeDay}`);
+  renderSchedule();
+}
+
+// ════ NEW WEEK MODAL ════
+function openNewWeekModal(){
+  const weekNum=(activeWeek?.week_number||0)+1;
+  const defaultLabel=lang==='ar'?`الأسبوع ${weekNum}`:`Week ${weekNum}`;
+  showModal(`<div class="drag-bar"></div>
+    <h3>${t('newWeekTitle')}</h3>
+    <div class="fg"><label>${t('newWeekLabel')}</label><input id="nwLabel" value="${defaultLabel}"></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#FFF8F0;padding:10px;border-radius:11px;border:1.5px solid #FFE4C4;margin-bottom:10px">
+      <input type="checkbox" id="nwCopy" checked style="width:16px;height:16px;accent-color:#FFB347">
+      <label for="nwCopy" style="font-size:13px;font-weight:800;color:#3E2723;cursor:pointer">${t('newWeekCopy')}</label>
+    </div>
+    <div style="background:#FFF8E1;border:1.5px solid #FFD580;border-radius:11px;padding:10px;font-size:12px;color:#7c5a1e;margin-bottom:10px">
+      ℹ️ ${lang==='ar'?'الأسبوع الحالي سيُحفظ كسجل تاريخي':'Current week will be saved as historical record'}
+    </div>
+    <div class="modal-acts">
+      <button class="bcnl" onclick="closeModal()">${t('cancel')}</button>
+      <button class="bsave" onclick="doNewWeek()">${t('newWeekCreate')}</button>
+    </div>`);
+}
+
+async function doNewWeek(){
+  const label=document.getElementById('nwLabel')?.value.trim();
+  const copy=document.getElementById('nwCopy')?.checked;
+  closeModal();
+  showLoading(document.getElementById('tabBody'));
+  await POST('/api/weeks/new',{
+    kid_id:activeKid, mode:activeMode, label,
+    copy_template: copy?(activeWeek?.id||null):null
+  });
+  activeDay=0;
+  activeWeek=null;
+  renderSchedule();
+}
+
+// ════ ACT MODAL ════
+async function openActModal(actId){
+  editActId=actId; tempChoices=[];
+  let a=null;
+  if(actId){
+    // Fetch from DB
+    const sc=await GET(`/api/activities?week_id=${activeWeek.id}&day_index=${activeDay}`);
+    a=sc.find(x=>x.id===actId);
+    if(a){selEmoji=a.emoji;isFreeAct=a.is_free;tempChoices=JSON.parse(JSON.stringify(a.choices||[]));}
+  }else{selEmoji='⭐';isFreeAct=false;}
+  const cats=T[lang].cats;
+  const curCat=a?a.category:'fun';
+  const emojis=CAT_EMOJIS[curCat]||['⭐'];
+  showModal(`<div class="drag-bar"></div>
+    <h3>${a?(lang==='ar'?'✏️ تعديل':'✏️ Edit'):(lang==='ar'?'➕ نشاط جديد':'➕ New Activity')}</h3>
+    <div class="fg"><label>${t('actName')}</label><input id="mName" value="${a?a.name:''}" placeholder="${t('actName')}"></div>
+    ${lang==='en'?`<div class="fg"><label>Arabic name</label><input id="mNameAr" value="${a?a.name:''}" dir="rtl"></div>`:''}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+      <div class="fg"><label>${t('time')}</label><input id="mTime" type="time" value="${a?a.time_val:'09:00'}"></div>
+      <div class="fg"><label>${t('dur')}</label><input id="mDur" type="number" value="${a?a.duration:30}" min="5" max="240" step="5"></div>
+    </div>
+    <div class="fg"><label>${t('cat')}</label>
+      <select id="mCat" onchange="selEmoji=CAT_EMOJIS[this.value][0];refreshActEmoji()">
+        ${Object.entries(cats).map(([k,v])=>`<option value="${k}" ${curCat===k?'selected':''}>${v}</option>`).join('')}
+      </select>
+    </div>
+    <div class="fg"><label>${t('emoji')}</label><div class="egrid" id="actEmojiG">
+      ${emojis.map(e=>`<button class="ebtn ${selEmoji===e?'sel':''}" onclick="selEmoji='${e}';refreshActEmoji()">${e}</button>`).join('')}
+    </div></div>
+    <div class="fg"><label>${t('points')}</label><input id="mPts" type="number" value="${a?a.points:5}" min="0" max="50"></div>
+    ${!a?`<div class="fg"><label>${t('applyTo')}</label>
+      <select id="mApply">
+        <option value="today">${t('today')}</option>
+        <option value="all">${t('allDays')}</option>
+        <option value="weekdays">${t('weekdays')}</option>
+        <option value="weekend">${t('weekend')}</option>
+      </select>
+    </div>`:''}
+    <div style="display:flex;align-items:center;gap:8px;background:#FFF8F0;padding:9px;border-radius:11px;border:1.5px solid #FFE4C4;margin-bottom:9px">
+      <input type="checkbox" id="mFree" ${isFreeAct?'checked':''} onchange="isFreeAct=this.checked;refreshChoicesSection()" style="width:16px;height:16px;accent-color:#FFB347;flex-shrink:0">
+      <label for="mFree" style="font-size:13px;font-weight:800;color:#3E2723;cursor:pointer">${t('isFree')}</label>
+    </div>
+    <div id="choicesSec">${choicesSectionHTML()}</div>
+    <div class="modal-acts">
+      <button class="bcnl" onclick="closeModal()">${t('cancel')}</button>
+      <button class="bsave" onclick="saveAct()">${t('save')}</button>
+    </div>
+    ${a?`<button class="bdel" onclick="delAct()">${t('del')}</button>`:''}`);
+}
+
+function refreshActEmoji(){
+  const cat=document.getElementById('mCat')?.value||'fun';
+  const emojis=CAT_EMOJIS[cat]||['⭐'];
+  if(!emojis.includes(selEmoji))selEmoji=emojis[0];
+  const g=document.getElementById('actEmojiG');
+  if(g)g.innerHTML=emojis.map(e=>`<button class="ebtn ${selEmoji===e?'sel':''}" onclick="selEmoji='${e}';refreshActEmoji()">${e}</button>`).join('');
+}
+function refreshChoicesSection(){const el=document.getElementById('choicesSec');if(el)el.innerHTML=choicesSectionHTML();}
+function choicesSectionHTML(){
+  if(!isFreeAct)return'';
+  return `<div class="choices-panel">
+    <h5>🎴 ${t('choices')} (${tempChoices.length})</h5>
+    ${tempChoices.map((c,i)=>`<div class="c-edit-row">
+      <div class="c-preview" style="background:${c.color}">${c.emoji}</div>
+      <span class="c-text">${c.text}</span>
+      <button class="c-ctrl" onclick="mvC(${i},-1)">↑</button>
+      <button class="c-ctrl" onclick="mvC(${i},1)">↓</button>
+      <button class="c-ctrl" onclick="edC(${i})">✏️</button>
+      <button class="c-ctrl" style="color:#E53935" onclick="rmC(${i})">✕</button>
+    </div>`).join('')}
+    <div style="margin-top:7px;padding-top:7px;border-top:1px solid #FFE4C4">
+      <div style="display:flex;gap:5px;align-items:center;margin-bottom:5px;flex-wrap:wrap">
+        <select id="ncEmoji" style="width:50px;font-size:16px;padding:3px;border-radius:7px;border:1.5px solid #FFE4C4" onchange="newCEmoji=this.value">
+          ${CHOICE_EMOJIS.map(e=>`<option>${e}</option>`).join('')}
+        </select>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          ${CHOICE_COLORS.map(c=>`<button onclick="newCColor='${c}';refreshChoicesSection()" style="width:20px;height:20px;border-radius:50%;background:${c};border:${newCColor===c?'2.5px solid #333':'2px solid transparent'};cursor:pointer;padding:0;flex-shrink:0"></button>`).join('')}
+        </div>
+      </div>
+      <div class="add-c-row">
+        <input id="ncInp" placeholder="${t('addChoice')}" onkeydown="if(event.key==='Enter')addC()">
+        <button class="abtn pri" onclick="addC()" style="flex-shrink:0">${t('add')}</button>
+      </div>
+    </div>
+  </div>`;
+}
+function addC(){const i=document.getElementById('ncInp'),e=document.getElementById('ncEmoji');if(!i?.value.trim())return;tempChoices.push({text:i.value.trim(),emoji:newCEmoji||e?.value||'⭐',color:newCColor||CHOICE_COLORS[0]});i.value='';refreshChoicesSection();}
+function rmC(i){tempChoices.splice(i,1);refreshChoicesSection();}
+function mvC(i,d){const n=i+d;if(n<0||n>=tempChoices.length)return;[tempChoices[i],tempChoices[n]]=[tempChoices[n],tempChoices[i]];refreshChoicesSection();}
+function edC(i){const v=prompt(lang==='ar'?'تعديل:':'Edit:',tempChoices[i].text);if(v?.trim())tempChoices[i].text=v.trim();refreshChoicesSection();}
+
+async function saveAct(){
+  const name=document.getElementById('mName')?.value.trim();
+  if(!name){alert(lang==='ar'?'من فضلك ادخل اسم النشاط':'Please enter a name');return;}
+  const nameAr=document.getElementById('mNameAr')?.value.trim()||name;
+  const apply=document.getElementById('mApply')?.value||'today';
+  const body={kid_id:activeKid,week_id:activeWeek.id,mode:activeMode,day_index:activeDay,
+    name:lang==='en'?nameAr:name,name_en:name,
+    time_val:document.getElementById('mTime')?.value||'09:00',
+    duration:parseInt(document.getElementById('mDur')?.value)||30,
+    category:document.getElementById('mCat')?.value||'fun',
+    emoji:selEmoji,points:parseInt(document.getElementById('mPts')?.value)||0,
+    is_free:isFreeAct,choices:tempChoices,apply};
+  closeModal();
+  showLoading(document.getElementById('tabBody'));
+  if(editActId) await PUT(`/api/activities/${editActId}`,body);
+  else await POST('/api/activities',body);
+  renderSchedule();
+}
+
+async function delAct(){
+  if(!confirm(lang==='ar'?'حذف هذا النشاط؟':'Delete?'))return;
+  closeModal();
+  await DEL(`/api/activities/${editActId}`);
+  renderSchedule();
+}
+
+// ════ REWARDS TAB ════
+async function renderRewards(){
+  rewardKid=rewardKid||activeKid;
+  const body=document.getElementById('tabBody');
+  if(!body)return;
+  showLoading(body);
+  const [rws]=await Promise.all([GET(`/api/rewards/${rewardKid}`),loadPoints()]);
+  const kid=kids.find(k=>k.id===rewardKid);
+  const pts=points[rewardKid]||0;
+  body.innerHTML=`
+    ${kidsRowHTML(rewardKid,'rewardKidClick')}
+    <div class="sec-card" style="text-align:center;margin-top:4px">
+      <div style="font-size:11px;color:#A1887F;font-weight:800;margin-bottom:3px">${t('currPts')}</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:36px;color:${kid.color}">${pts}</div>
+      <div style="font-size:11px;color:#A1887F">⭐</div>
+    </div>
+    <div class="reward-grid">
+      ${rws.map(r=>{
+        const can=pts>=r.points_needed&&!r.claimed;
+        const rn=lang==='en'&&r.name_en?r.name_en:r.name;
+        return `<div class="rcard ${r.claimed?'claimed':pts>=r.points_needed?'unlocked':''}">
+          ${pts>=r.points_needed&&!r.claimed?`<div class="unlocked-badge">${t('unlocked')}</div>`:''}
+          <span class="r-icon">${r.emoji}</span>
+          <div class="r-name">${rn}</div>
+          <div class="r-pts">${r.claimed?t('claimed'):`${t('needs')} ${r.points_needed}`}</div>
+          ${can?`<button class="r-claim" onclick="claimRw(${r.id})">${t('claim')}</button>`:''}
+          <button class="r-del" onclick="delRw(${r.id})">✕</button>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="sec-card">
+      <h4>${t('newReward')}</h4>
+      <div class="fg"><label>${t('rName')}</label><input id="rwName" placeholder="${lang==='ar'?'مثل: ساعة شاشة':'e.g. Extra screen hour'}"></div>
+      ${lang==='en'?`<div class="fg"><label>Arabic name</label><input id="rwNameAr" dir="rtl"></div>`:''}
+      <div class="fg"><label>${t('rPts')}</label><input id="rwPts" type="number" value="50" min="5"></div>
+      <div class="fg"><label>${t('emoji')}</label><div class="egrid">
+        ${REWARD_EMOJIS.map(e=>`<button class="ebtn ${selRwEmoji===e?'sel':''}" onclick="selRwEmoji='${e}';renderRewards()">${e}</button>`).join('')}
+      </div></div>
+      <button class="abtn pri" onclick="addRw()" style="margin-top:3px">${t('addRw')}</button>
+    </div>`;
+}
+function rewardKidClick(id){rewardKid=id;setCSS(id);renderRewards();}
+async function claimRw(id){await PUT(`/api/rewards/${id}`,{claimed:true});cel(20);sndWin();renderRewards();}
+async function delRw(id){await DEL(`/api/rewards/${id}`);renderRewards();}
+async function addRw(){
+  const name=document.getElementById('rwName')?.value.trim();if(!name)return;
+  const nameAr=document.getElementById('rwNameAr')?.value.trim()||name;
+  const pts=parseInt(document.getElementById('rwPts')?.value)||50;
+  await POST('/api/rewards',{kid_id:rewardKid,name:lang==='en'?nameAr:name,name_en:name,emoji:selRwEmoji,points_needed:pts});
+  renderRewards();
+}
+
+// ════ REPORT TAB ════
+let reportWeekId = null; // null = active week, 'all' = cumulative
+
+async function renderReport(){
+  reportKid=reportKid||activeKid;
+  const body=document.getElementById('tabBody');
+  if(!body)return;
+  showLoading(body);
+  const kid=kids.find(k=>k.id===reportKid);
+  await loadPoints();
+  const weeks=await GET(`/api/weeks?kid_id=${reportKid}&mode=${activeMode}`);
+  const cats=T[lang].cats;
+  const activeW=weeks.find(w=>w.is_active)||weeks[0];
+
+  // Determine which week(s) to show
+  const showWeekId = reportWeekId === null ? activeW?.id : reportWeekId;
+  const isCumulative = reportWeekId === 'all';
+
+  let allDays=[], totalDone=0;
+  const catTotals={};
+  const days=getDays();
+
+  if(isCumulative){
+    // Load all weeks all days
+    for(const w of weeks){
+      const wdays=await Promise.all(days.map((_,i)=>GET(`/api/activities?week_id=${w.id}&day_index=${i}`)));
+      wdays.forEach(sc=>sc.filter(a=>a.done).forEach(a=>{catTotals[a.category]=(catTotals[a.category]||0)+1;totalDone++;}));
+      if(!allDays.length) allDays=wdays; // show latest week in cells
+    }
+  } else if(showWeekId){
+    allDays=await Promise.all(days.map((_,i)=>GET(`/api/activities?week_id=${showWeekId}&day_index=${i}`)));
+    allDays.forEach(sc=>sc.filter(a=>a.done).forEach(a=>{catTotals[a.category]=(catTotals[a.category]||0)+1;totalDone++;}));
+  }
+
+  body.innerHTML=`
+    ${kidsRowHTML(reportKid,'reportKidClick')}
+    <div style="display:flex;gap:6px;padding:0 0 10px;flex-wrap:wrap;align-items:center">
+      <button class="abtn" onclick="doPrint()">${t('print')}</button>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        ${weeks.map(w=>`<button class="stab ${(!isCumulative&&showWeekId===w.id)?'active':''}" onclick="reportWeekId=${w.id};renderReport()" style="font-size:11px;padding:4px 10px">${w.label||`W${w.week_number}`}${w.is_active?` ✅`:''}</button>`).join('')}
+        <button class="stab ${isCumulative?'active':''}" onclick="reportWeekId='all';renderReport()" style="font-size:11px;padding:4px 10px">${lang==='ar'?'📊 تراكمي':'📊 All'}</button>
+      </div>
+    </div>
+    <div class="sec-card">
+      <h4>${t('dailyPerf')} ${isCumulative?`(${lang==='ar'?'آخر أسبوع':'Latest week'})`:''}</h4>
+      <div class="day-cells">
+        ${allDays.map((sc,i)=>{const dn=sc.filter(a=>a.done).length;const pct=sc.length?Math.round(dn/sc.length*100):0;
+          const bg=pct>=80?'#E8F5E9':pct>=50?'#FFF8E1':pct>0?'#FFF3E0':'#F5F5F5';
+          const tc=pct>=80?'#2E7D32':pct>=50?'#F57F17':pct>0?'#E65100':'#9E9E9E';
+          return `<div class="dcell" style="background:${bg}"><div class="dn">${String(days[i]).substring(0,3)}</div><div class="dp" style="color:${tc}">${pct}%</div></div>`;}).join('')}
+      </div>
+    </div>
+    <div class="sec-card">
+      <h4>${t('actDist')} ${isCumulative?`(${lang==='ar'?'كل الأسابيع':'All weeks'})`:''}</h4>
+      ${Object.entries(catTotals).sort((a,b)=>b[1]-a[1]).map(([cat,cnt])=>{const pct=totalDone?Math.round(cnt/totalDone*100):0;
+        return `<div class="cat-bar-row"><span class="cbl">${cats[cat]||cat}</span><div class="cbout"><div class="cbin" style="width:${pct}%;background:${CAT_COLORS[cat]||'#FFB347'}"></div></div><span class="cbval">${cnt}</span></div>`;
+      }).join('')||`<p style="color:#A1887F;font-size:13px;text-align:center">${lang==='ar'?'لا توجد بيانات':'No data yet'}</p>`}
+    </div>
+    <div class="sec-card" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center">
+      <div><div style="font-size:24px">⭐</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:${kid.color}">${points[reportKid]||0}</div><div style="font-size:10px;color:#A1887F">${t('total')}</div></div>
+      <div><div style="font-size:24px">✅</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:#66BB6A">${totalDone}</div><div style="font-size:10px;color:#A1887F">${isCumulative?(lang==='ar'?'إجمالي':'Total'):(lang==='ar'?'هذا الأسبوع':'This week')}</div></div>
+      <div><div style="font-size:24px">📅</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:#FFB347">${weeks.length}</div><div style="font-size:10px;color:#A1887F">${lang==='ar'?'أسابيع':'Weeks'}</div></div>
+    </div>
+    <div class="sec-card">
+      <h4>📚 ${t('weekHistory')}</h4>
+      ${weeks.map(w=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #FFF3E0;font-size:13px;cursor:pointer" onclick="reportWeekId=${w.id};renderReport()">
+        <div>
+          <span style="font-weight:800;color:${(!isCumulative&&showWeekId===w.id)?'#FFB347':'#3E2723'}">${w.label||`Week ${w.week_number}`}</span>
+          ${w.is_active?`<span style="background:#E8F5E9;color:#2E7D32;border-radius:50px;padding:1px 7px;font-size:10px;font-weight:800;margin-right:5px">${lang==='ar'?'نشط':'Active'}</span>`:''}
+        </div>
+        <div style="font-size:12px;color:#A1887F">✅ ${w.done_acts||0}/${w.total_acts||0} · ⭐${w.total_pts||0}</div>
+      </div>`).join('')}
+    </div>`;
+}
+function reportKidClick(id){reportKid=id;reportWeekId=null;setCSS(id);renderReport();}
+function doPrint(){
+  const kid=kids.find(k=>k.id===reportKid);const days=getDays();
+  const w=window.open('','_blank');if(!w)return;
+  w.document.write(`<html dir="${lang==='ar'?'rtl':'ltr'}"><head><meta charset="utf-8"><style>body{font-family:Tahoma;padding:20px;max-width:700px;margin:0 auto}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:8px;text-align:center}</style></head><body><h2 style="text-align:center">📊 ${kid?kn(kid):''}</h2><p style="text-align:center;color:#888">⭐ ${points[reportKid]||0}</p><script>window.print();<\/script></body></html>`);
+}
+
+// ════ SETTINGS TAB ════
+function renderSettings(){
+  const body=document.getElementById('tabBody');
+  if(!body)return;
+  body.innerHTML=`
+    <div class="sec-card">
+      <h4>👦 ${t('kids')}</h4>
+      <div>${kids.map(k=>`<div class="ks-row">
+        <div class="ks-av" style="border-color:${k.color};background:${k.bg}">${k.photo?`<img src="${k.photo}">`:`<span>${k.avatar}</span>`}</div>
+        <div class="ks-body">
+          <div class="ks-name">${kn(k)}</div>
+          <div class="ks-sub" style="color:${k.color}">⭐ ${points[k.id]||0} ${k.kid_pin?'· 🔒':''}</div>
+        </div>
+        <div class="ks-btns">
+          <button class="abtn" onclick="openEditKid(${k.id})" style="font-size:11px;padding:5px 9px">✏️</button>
+          ${kids.length>1?`<button class="abtn danger" onclick="doRemoveKid(${k.id})" style="font-size:11px;padding:5px 9px">🗑️</button>`:''}
+        </div>
+      </div>`).join('')}</div>
+      <div style="margin-top:11px;border-top:1px solid #FFF3E0;padding-top:11px">
+        <div style="font-weight:800;font-size:12px;color:#5D4037;margin-bottom:7px">${t('newKid')}</div>
+        <div class="fg"><input id="nkAr" placeholder="${lang==='ar'?'الاسم بالعربي':'Arabic name'}" dir="rtl"></div>
+        <div class="fg"><input id="nkEn" placeholder="English name" dir="ltr"></div>
+        <div class="fg"><label>${t('avatar')}</label><div class="egrid">${KID_AVATARS.map(e=>`<button class="ebtn ${selKidAvatar===e?'sel':''}" onclick="selKidAvatar='${e}';renderSettings()">${e}</button>`).join('')}</div></div>
+        <div class="fg"><label>${t('color')}</label><div class="color-dots">${KID_COLORS.map(c=>`<div class="cdot ${selKidColor===c?'sel':''}" style="background:${c}" onclick="selKidColor='${c}';renderSettings()"></div>`).join('')}</div></div>
+        <button class="abtn pri" onclick="doAddKid()">${t('addKid')}</button>
+      </div>
+    </div>
+    <div class="sec-card">
+      <h4>🔒 ${lang==='ar'?'قفل الوالدين':'Parent Lock'}</h4>
+      ${settings.parent_pin?`<p style="font-size:12px;color:#66BB6A;font-weight:800;margin-bottom:9px">✅ ${lang==='ar'?'الرمز مفعّل':'PIN active'}</p>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button class="abtn" onclick="startSetPin()">${t('changePin')}</button>
+          <button class="abtn danger" onclick="doRemovePin()">${t('removePin')}</button>
+        </div>`
+      :`<p style="font-size:12px;color:#A1887F;margin-bottom:9px">${lang==='ar'?'لا يوجد رمز سري':'No PIN set'}</p>
+        <button class="abtn pri" onclick="startSetPin()">${lang==='ar'?'🔑 تعيين رمز':'🔑 Set PIN'}</button>`}
+    </div>
+    <div class="sec-card">
+      <h4>${t('sounds')}</h4>
+      <div class="tog-row"><span>${t('soundOn')}</span><button class="tog ${settings.sound?'on':''}" onclick="toggleSound()"></button></div>
+      <div class="tog-row"><span>${t('vol')}</span><input type="range" style="width:110px;accent-color:#FFB347" min="0" max="1" step="0.1" value="${settings.volume||0.6}" oninput="settings.volume=parseFloat(this.value);POST('/api/settings',{key:'volume',value:this.value})"></div>
+      <div class="tog-row" style="border-bottom:none;flex-wrap:wrap;gap:6px">
+        <span style="width:100%;margin-bottom:4px;font-size:11px;color:#A1887F">${lang==='ar'?'اختبار الأصوات:':'Test sounds:'}</span>
+        <button class="abtn" onclick="sndOk()" style="font-size:11px">▶ ${lang==='ar'?'إتمام':'Done'}</button>
+        <button class="abtn" onclick="sndWin()" style="font-size:11px">▶ ${lang==='ar'?'اكتمال':'Win'}</button>
+        <button class="abtn" onclick="sndPick()" style="font-size:11px">▶ ${lang==='ar'?'اختيار':'Pick'}</button>
+        <button class="abtn" onclick="sndUnlock()" style="font-size:11px">▶ ${lang==='ar'?'فتح':'Unlock'}</button>
+      </div>
+    </div>
+    <div class="sec-card">
+      <h4>🗄️ ${lang==='ar'?'البيانات':'Data'}</h4>
+      <p style="font-size:12px;color:#A1887F;margin-bottom:10px">${lang==='ar'?'إعادة ضبط الجداول والأنشطة (الأولاد والإعدادات تبقى)':'Reset schedules and activities (kids and settings are kept)'}</p>
+      <button class="abtn danger" onclick="doResetDB()">${lang==='ar'?'⚠️ إعادة ضبط الجداول':'⚠️ Reset Schedules'}</button>
+    </div>`;
+}
+
+async function toggleSound(){settings.sound=!settings.sound;await POST('/api/settings',{key:'sound',value:settings.sound});renderSettings();}
+
+async function doResetDB(){
+  if(!confirm(lang==='ar'?'⚠️ هذا سيمسح كل الجداول والأنشطة والمكافآت!\nالأولاد وإعداداتهم ستبقى.\nهل أنت متأكد؟':'⚠️ This will delete all schedules, activities and rewards!\nKids and their settings will be kept.\nAre you sure?'))return;
+  if(!confirm(lang==='ar'?'تأكيد أخير — هل أنت متأكد؟':'Final confirm — are you sure?'))return;
+  try{
+    await POST('/api/reset-db',{confirm:'RESET_CONFIRM'});
+    alert(lang==='ar'?'✅ تم إعادة الضبط بنجاح':'✅ Reset successful');
+    activeWeek=null;
+    renderSchedule();
+  }catch(e){alert(lang==='ar'?'❌ فشل إعادة الضبط':'❌ Reset failed');}
+}
+
+function openEditKid(id){
+  editKidId=id;_ekAvatar=null;_ekColor=null;_ekPhoto=null;_ekBgIdx=null;
+  const k=kids.find(x=>x.id===id);if(!k)return;
+  showModal(`<div class="drag-bar"></div>
+    <h3>${t('editKid')}</h3>
+    <div style="text-align:center;margin-bottom:12px">
+      <div style="width:58px;height:58px;border-radius:50%;background:${k.bg};border:3px solid ${k.color};display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto;overflow:hidden">
+        ${k.photo?`<img src="${k.photo}" style="width:100%;height:100%;object-fit:cover">`:k.avatar}
+      </div>
+    </div>
+    <div class="fg"><label>${lang==='ar'?'الاسم بالعربي':'Arabic name'}</label><input id="ekAr" value="${k.name}" dir="rtl"></div>
+    <div class="fg"><label>English name</label><input id="ekEn" value="${k.name_en||''}" dir="ltr"></div>
+    <div class="fg"><label>${t('avatar')}</label><div class="egrid" id="ekAvG">
+      ${KID_AVATARS.map(e=>`<button class="ebtn ${k.avatar===e?'sel':''}" onclick="setEkAv('${e}')">${e}</button>`).join('')}
+    </div></div>
+    <div class="fg"><label>${t('color')}</label><div class="color-dots" id="ekColG">
+      ${KID_COLORS.map((c,i)=>`<div class="cdot ${k.color===c?'sel':''}" style="background:${c}" onclick="setEkCol('${c}',${i})"></div>`).join('')}
+    </div></div>
+    <div class="fg"><label>📷 ${lang==='ar'?'صورة شخصية':'Photo'}</label>
+      <label class="photo-lbl">📷 ${lang==='ar'?'رفع صورة':'Upload'}<input type="file" accept="image/*" style="display:none" onchange="uploadEkPhoto(event)"></label>
+    </div>
+    <div class="fg"><label>🔒 ${t('kidPin')}</label>
+      <input id="ekPin" type="password" maxlength="4" placeholder="${k.kid_pin?'****':'----'}" style="letter-spacing:4px;font-size:20px;text-align:center">
+      ${k.kid_pin?`<button class="abtn danger" onclick="clearKidPin()" style="margin-top:5px;font-size:11px">${lang==='ar'?'🔓 إزالة الرمز':'🔓 Remove PIN'}</button>`:''}
+    </div>
+    <div class="modal-acts">
+      <button class="bcnl" onclick="closeModal()">${t('cancel')}</button>
+      <button class="bsave" onclick="doSaveKid()">${t('save')}</button>
+    </div>`);
+}
+
+function setEkAv(av){_ekAvatar=av;document.querySelectorAll('#ekAvG .ebtn').forEach(b=>b.classList.toggle('sel',b.textContent.trim()===av));}
+function setEkCol(c,i){_ekColor=c;_ekBgIdx=i;document.querySelectorAll('#ekColG .cdot').forEach((d,di)=>d.classList.toggle('sel',di===i));}
+function uploadEkPhoto(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{_ekPhoto=ev.target.result;};r.readAsDataURL(f);}
+
+async function doSaveKid(){
+  const k=kids.find(x=>x.id===editKidId);if(!k)return;
+  const pinInput=document.getElementById('ekPin')?.value?.trim();
+  const newColor=_ekColor||k.color;
+  const newBg=_ekBgIdx!==null?KID_BGS[_ekBgIdx]:k.bg;
+  const body={name:document.getElementById('ekAr')?.value.trim()||k.name,name_en:document.getElementById('ekEn')?.value.trim()||k.name_en,avatar:_ekAvatar||k.avatar,color:newColor,bg:newBg,photo:_ekPhoto||k.photo};
+  if(pinInput&&pinInput.length===4) body.kid_pin=pinInput;
+  closeModal();
+  const updated=await PUT(`/api/kids/${editKidId}`,body);
+  const idx=kids.findIndex(x=>x.id===editKidId);
+  if(idx>=0)kids[idx]={...kids[idx],...updated};
+  renderSettings();
+}
+async function clearKidPin(){
+  if(!confirm(lang==='ar'?'إزالة الرمز السري؟':'Remove PIN?'))return;
+  await PUT(`/api/kids/${editKidId}`,{kid_pin:''});
+  const idx=kids.findIndex(x=>x.id===editKidId);
+  if(idx>=0)kids[idx].kid_pin=null;
+  closeModal();renderSettings();
+}
+async function doAddKid(){
+  const name=document.getElementById('nkAr')?.value.trim();if(!name)return;
+  if(kids.length>=6)return;
+  const nameen=document.getElementById('nkEn')?.value.trim();
+  const bgIdx=KID_COLORS.indexOf(selKidColor);
+  const bg=bgIdx>=0?KID_BGS[bgIdx]:KID_BGS[0];
+  const k=await POST('/api/kids',{name,name_en:nameen||name,avatar:selKidAvatar,color:selKidColor,bg});
+  kids.push(k);points[k.id]=0;
+  if(document.getElementById('nkAr'))document.getElementById('nkAr').value='';
+  if(document.getElementById('nkEn'))document.getElementById('nkEn').value='';
+  renderSettings();
+}
+async function doRemoveKid(id){
+  if(!confirm(lang==='ar'?'حذف هذا الطفل وكل بياناته؟':'Remove this kid and all data?'))return;
+  await DEL(`/api/kids/${id}`);
+  kids=kids.filter(k=>k.id!==id);
+  if(activeKid===id)activeKid=kids[0]?.id;
+  if(rewardKid===id)rewardKid=kids[0]?.id;
+  if(reportKid===id)reportKid=kids[0]?.id;
+  await loadPoints();
+  renderSettings();
+}
+
+// ════ PARENT PIN ════
+function renderLockScreen(){
+  const app=document.getElementById('app');if(!app)return;
+  app.innerHTML=`
+    <div class="topbar">
+      <span class="logo">🌟 ${lang==='ar'?'جدول أولادي':'My Kids'}</span>
+      <div class="lang-pills">
+        <button class="${lang==='ar'?'active':''}" onclick="changeLang('ar')">عربي</button>
+        <button class="${lang==='en'?'active':''}" onclick="changeLang('en')">EN</button>
+      </div>
+    </div>
+    <div class="lock-screen">
+      <div class="lock-icon">🔒</div>
+      <div class="lock-title">${lang==='ar'?'داشبورد الوالدين':'Parent Dashboard'}</div>
+      <div class="lock-sub">${t('lockSub')}</div>
+      <div class="pin-dots" id="pinDots">${Array(4).fill('<div class="pin-dot"></div>').join('')}</div>
+      <div class="numpad">
+        ${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>`<button class="np-btn ${n===''?'invis':''}" onclick="pinPress('${n}',false,false)">${n}</button>`).join('')}
+      </div>
+      <div class="pin-err" id="pinErr"></div>
+      <button class="abtn" style="margin-top:13px" onclick="goKidsScreen()">😊 ${t('child')}</button>
+    </div>`;
+}
+
+function startSetPin(){pinBuf='';pinStep='first';pinFirst='';
+  showModal(`<div class="drag-bar"></div>
+    <div class="lock-screen" style="padding:10px 0 0">
+      <div class="lock-icon">🔑</div>
+      <div class="lock-title" id="spTitle">${t('setPin')}</div>
+      <div class="lock-sub" id="spSub">${t('setPinSub')}</div>
+      <div class="pin-dots" id="setPinDots">${Array(4).fill('<div class="pin-dot"></div>').join('')}</div>
+      <div class="numpad">
+        ${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>`<button class="np-btn ${n===''?'invis':''}" onclick="pinPress('${n}',true,false)">${n}</button>`).join('')}
+      </div>
+      <div class="pin-err" id="setPinErr"></div>
+      <button class="abtn" style="margin-top:9px" onclick="closeModal();pinBuf='';pinStep='enter'">${t('cancel')}</button>
+    </div>`);}
+
+async function doRemovePin(){
+  if(!confirm(lang==='ar'?'إزالة الرمز السري؟':'Remove PIN?'))return;
+  settings.parent_pin=null;
+  await POST('/api/settings',{key:'parent_pin',value:null});
+  renderSettings();
+}
+
+async function pinPress(val,isSetting,isKid){
+  sndKey();
+  if(val==='⌫') pinBuf=pinBuf.slice(0,-1);
+  else if(val!==''&&pinBuf.length<4) pinBuf+=String(val);
+  const dotsId=isSetting?'setPinDots':isKid?'kidPinDots':'pinDots';
+  const dotsEl=document.getElementById(dotsId);
+  if(dotsEl)dotsEl.querySelectorAll('.pin-dot').forEach((d,i)=>d.classList.toggle('filled',i<pinBuf.length));
+  if(pinBuf.length===4){
+    if(isKid){
+      const r=await POST(`/api/kids/${childKid}/verify-pin`,{pin:pinBuf});
+      if(r.ok){closeModal();role='child';activeDay=getSafeDay(activeMode);sndUnlock();renderApp();}
+      else{sndWrong();pinBuf='';if(dotsEl)dotsEl.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled'));const e=document.getElementById('kidPinErr');if(e){e.textContent=t('wrongPin');setTimeout(()=>e.textContent='',2000);}}
+    }else if(!isSetting){
+      if(pinBuf===String(settings.parent_pin)){parentUnlocked=true;pinBuf='';sndUnlock();renderApp();}
+      else{sndWrong();pinBuf='';if(dotsEl)dotsEl.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled'));const e=document.getElementById('pinErr');if(e){e.textContent=t('wrongPin');setTimeout(()=>e.textContent='',2000);}}
+    }else{
+      if(pinStep==='first'){pinFirst=pinBuf;pinBuf='';pinStep='confirm';const ti=document.getElementById('spTitle'),su=document.getElementById('spSub');if(ti)ti.textContent=t('confirmPin');if(su)su.textContent=t('confirmPin');if(dotsEl)dotsEl.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled'));}
+      else{
+        if(pinBuf===pinFirst){settings.parent_pin=pinBuf;await POST('/api/settings',{key:'parent_pin',value:pinBuf});pinBuf='';pinFirst='';pinStep='enter';closeModal();alert(t('pinSaved'));renderSettings();}
+        else{sndWrong();pinBuf='';pinFirst='';pinStep='first';const e=document.getElementById('setPinErr');if(e){e.textContent=t('pinMismatch');setTimeout(()=>e.textContent='',2000);}if(dotsEl)dotsEl.querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled'));const ti=document.getElementById('spTitle'),su=document.getElementById('spSub');if(ti)ti.textContent=t('setPin');if(su)su.textContent=t('setPinSub');}
+      }
+    }
+  }
+}
+
+function tryParent(){
+  if(!settings.parent_pin){parentUnlocked=true;role='parent';renderApp();}
+  else if(parentUnlocked){role='parent';renderApp();}
+  else{role='parent';renderApp();}
+}
+
+// ════ HOME SCREEN ════
+function renderHomeScreen(){
+  const app=document.getElementById('app');if(!app)return;
+  app.innerHTML=`
+    <div class="topbar">
+      <span class="logo">🌟 ${lang==='ar'?'جدول أولادي':'My Kids'}</span>
+      <div class="lang-pills">
+        <button class="${lang==='ar'?'active':''}" onclick="changeLang('ar')">عربي</button>
+        <button class="${lang==='en'?'active':''}" onclick="changeLang('en')">EN</button>
+      </div>
+    </div>
+    <div style="padding:40px 22px 0;text-align:center">
+      <div style="font-size:60px;margin-bottom:10px">🌟</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#5D4037;margin-bottom:5px">${lang==='ar'?'جدول أولادي':'My Kids Schedule'}</div>
+      <div style="font-size:13px;color:#A1887F;margin-bottom:36px">${lang==='ar'?'اختر كيف تريد الدخول':'Choose how to enter'}</div>
+    </div>
+    <div style="padding:0 22px;display:flex;flex-direction:column;gap:13px">
+      <button onclick="tryParent()" style="display:flex;align-items:center;gap:15px;padding:17px 19px;border-radius:19px;border:2.5px solid #FFB347;background:#FFF8E1;cursor:pointer;width:100%">
+        <div style="width:52px;height:52px;border-radius:15px;background:#FFB347;display:flex;align-items:center;justify-content:center;font-size:27px;flex-shrink:0">🛡️</div>
+        <div style="text-align:${lang==='ar'?'right':'left'}">
+          <div style="font-family:'Fredoka One',cursive;font-size:17px;color:#7c5a1e">${lang==='ar'?'داشبورد الوالدين':'Parent Dashboard'}</div>
+          <div style="font-size:11px;color:#A1887F;margin-top:2px">${lang==='ar'?'إدارة الجدول والإعدادات':'Manage schedule & settings'}</div>
+        </div>
+      </button>
+      <button onclick="goKidsScreen()" style="display:flex;align-items:center;gap:15px;padding:17px 19px;border-radius:19px;border:2.5px solid #87CEEB;background:#E3F2FD;cursor:pointer;width:100%">
+        <div style="width:52px;height:52px;border-radius:15px;background:#87CEEB;display:flex;align-items:center;justify-content:center;font-size:27px;flex-shrink:0">😊</div>
+        <div style="text-align:${lang==='ar'?'right':'left'}">
+          <div style="font-family:'Fredoka One',cursive;font-size:17px;color:#1565C0">${lang==='ar'?'شاشة الأطفال':'Kids Screen'}</div>
+          <div style="font-size:11px;color:#A1887F;margin-top:2px">${lang==='ar'?'اختر طفلاً وابدأ اليوم':'Choose a kid and start the day'}</div>
+        </div>
+      </button>
+    </div>`;
+}
+
+// ════ CHILD FLOW ════
+function goKidsScreen(){role='picker';renderApp();}
+function goBackFromChild(){role='picker';freeChoiceId=null;renderApp();}
+
+function renderChildFlow(){
+  const app=document.getElementById('app');if(!app)return;
+  if(role==='picker'){
+    app.innerHTML=`
+      <div class="topbar">
+        <span class="logo">🌟 ${lang==='ar'?'جدول أولادي':'My Kids'}</span>
+        <div class="lang-pills">
+          <button class="${lang==='ar'?'active':''}" onclick="changeLang('ar')">عربي</button>
+          <button class="${lang==='en'?'active':''}" onclick="changeLang('en')">EN</button>
+        </div>
+      </div>
+      <div style="padding:20px 22px 0;text-align:center">
+        <div style="font-size:46px;margin-bottom:8px">👋</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:21px;color:#5D4037;margin-bottom:3px">${t('chooseKid')}</div>
+        <div style="font-size:12px;color:#A1887F;margin-bottom:20px">${lang==='ar'?'اختر اسمك لتبدأ يومك':'Choose your name to start'}</div>
+      </div>
+      <div style="padding:0 22px;display:flex;flex-direction:column;gap:11px">
+        ${kids.map(k=>`<button onclick="selectChild(${k.id})" style="display:flex;align-items:center;gap:13px;padding:13px 17px;border-radius:19px;border:3px solid ${k.color};background:#fff;cursor:pointer;width:100%;transition:background .15s">
+          <div style="width:54px;height:54px;border-radius:50%;background:${k.bg};border:3px solid ${k.color};display:flex;align-items:center;justify-content:center;font-size:28px;overflow:hidden;flex-shrink:0">
+            ${k.photo?`<img src="${k.photo}" style="width:100%;height:100%;object-fit:cover">`:k.avatar}
+          </div>
+          <div style="flex:1;text-align:${lang==='ar'?'right':'left'}">
+            <div style="font-family:'Fredoka One',cursive;font-size:19px;color:${k.color}">${kn(k)}</div>
+            <div style="font-size:11px;color:#A1887F;margin-top:1px">⭐ ${points[k.id]||0} ${lang==='ar'?'نقطة':'pts'} ${k.kid_pin?'· 🔒':''}</div>
+          </div>
+        </button>`).join('')}
+      </div>
+      <div style="padding:22px 22px 0;text-align:center">
+        <div style="height:1px;background:#FFE4C4;margin-bottom:18px"></div>
+        <button class="abtn" onclick="tryParent()">🛡️ ${lang==='ar'?'داشبورد الوالدين':'Parent Dashboard'}</button>
+      </div>`;
+    return;
+  }
+  renderChildScreen();
+}
+
+async function selectChild(id){
+  const kid=kids.find(k=>k.id===id);
+  childKid=id;
+  if(kid?.kid_pin){
+    pinBuf='';
+    showModal(`<div class="drag-bar"></div>
+      <div class="lock-screen" style="padding:10px 0 0">
+        <div style="width:64px;height:64px;border-radius:50%;background:${kid.bg};border:4px solid ${kid.color};display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 11px;overflow:hidden">
+          ${kid.photo?`<img src="${kid.photo}" style="width:100%;height:100%;object-fit:cover">`:kid.avatar}
+        </div>
+        <div class="lock-title" style="color:${kid.color}">${kn(kid)}</div>
+        <div class="lock-sub">${lang==='ar'?'أدخل رمزك السري':'Enter your PIN'}</div>
+        <div class="pin-dots" id="kidPinDots">${Array(4).fill('<div class="pin-dot"></div>').join('')}</div>
+        <div class="numpad">
+          ${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(n=>`<button class="np-btn ${n===''?'invis':''}" onclick="pinPress('${n}',false,true)">${n}</button>`).join('')}
+        </div>
+        <div class="pin-err" id="kidPinErr"></div>
+        <button class="abtn" style="margin-top:9px" onclick="closeModal()">${t('cancel')}</button>
+      </div>`);
+  }else{
+    role='child';activeDay=getSafeDay(activeMode);setCSS(id);renderApp();
+  }
+}
+
+async function renderChildScreen(){
+  const app=document.getElementById('app');if(!app)return;
+  const kid=kids.find(k=>k.id===childKid);
+  if(!kid){role='picker';renderApp();return;}
+  setCSS(childKid);
+  // Always fresh from DB
+  const cw=await GET(`/api/weeks/active?kid_id=${childKid}&mode=${activeMode}`);
+  if(!cw){
+    app.innerHTML=`<div class="loading"><p style="color:#A1887F;text-align:center">${lang==='ar'?'لا يوجد جدول نشط':'No active schedule'}</p></div>`;
+    return;
+  }
+  const sc=await GET(`/api/activities?week_id=${cw.id}&day_index=${activeDay}`);
+  await loadPoints();
+  const done=sc.filter(a=>a.done).length;
+  const dayPts=sc.filter(a=>a.done).reduce((s,a)=>s+(a.points||0),0);
+  const pct=sc.length?Math.round(done/sc.length*100):0;
+  const days=getDays();
+
+  app.innerHTML=`
+    <div class="topbar">
+      <button class="abtn" onclick="goBackFromChild()" style="padding:5px 10px;font-size:12px">← ${lang==='ar'?'رجوع':'Back'}</button>
+      <div class="lang-pills">
+        <button class="${lang==='ar'?'active':''}" onclick="changeLang('ar');renderChildScreen()">عربي</button>
+        <button class="${lang==='en'?'active':''}" onclick="changeLang('en');renderChildScreen()">EN</button>
+      </div>
+    </div>
+    <div class="page-body"><div class="content"><div class="ci">
+    <div class="child-hdr">
+      <div class="child-big-av" style="border-color:${kid.color};background:${kid.bg}">
+        ${kid.photo?`<img src="${kid.photo}">`:`<span>${kid.avatar}</span>`}
+      </div>
+      <div class="child-name-lbl" style="color:${kid.color}">${kn(kid)}</div>
+      <div class="child-day-lbl">${days[activeDay]} · ${cw.label||''}</div>
+    </div>
+    <div class="stats3">
+      <div class="scard"><span class="sv" id="csv-tasks" style="color:${kid.color}">${done}/${sc.length}</span><span class="sl">${t('tasks')}</span></div>
+      <div class="scard"><span class="sv" id="csv-pts" style="color:${kid.color}">${dayPts}</span><span class="sl">${t('pts')}</span></div>
+      <div class="scard"><span class="sv" id="csv-total" style="color:${kid.color}">${points[childKid]||0}</span><span class="sl">${t('total')}</span></div>
+    </div>
+    <div id="rwBannerChild" class="rw-banner"></div>
+    <div class="prog-wrap">
+      <div class="prog-lbl"><span>${t('todayProg')}</span><span id="cprogPct">${pct}%</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="cprogFill" style="width:${pct}%;background:${kid.color}"></div></div>
+    </div>
+    <div class="day-nav">
+      ${days.map((d,i)=>{
+        const locked=isDayLocked(i,true);
+        return `<button class="day-btn ${i===activeDay?'active':''} ${locked?'locked-day':''}" 
+          style="${i===activeDay?`background:${kid.color};border-color:${kid.color}`:''}"
+          onclick="${locked?'':`activeDay=${i};renderChildScreen()`}"
+          title="${locked?t('lockedDay'):''}">
+          ${d}${locked?' 🔒':''}
+        </button>`;
+      }).join('')}
+    </div>
+    <div class="sched-list">
+      ${sc.map(a=>actRowHTML({...a,day_index:activeDay},kid.color,true)).join('')}
+    </div>
+    ${freeChoiceId?freeChoiceOverlayHTML(sc,kid):''}
+    </div></div></div>`;
+}
+
+function freeChoiceOverlayHTML(sc,kid){
+  const a=sc.find(x=>x.id===freeChoiceId);if(!a)return'';
+  const nm=lang==='en'&&a.name_en?a.name_en:a.name;
+  return `<div class="modal-overlay" onclick="freeChoiceId=null;renderChildScreen()">
+    <div class="modal-sheet" onclick="event.stopPropagation()">
+      <div class="drag-bar"></div>
+      <div style="text-align:center;margin-bottom:12px">
+        <div style="font-size:38px">${a.emoji}</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:#5D4037;margin-top:4px">${nm}</div>
+        <div style="font-size:12px;color:#A1887F;margin-top:3px">${t('pickAct')}</div>
+      </div>
+      ${!a.choices||!a.choices.length?`<p style="text-align:center;color:#A1887F;padding:18px">${t('noPicks')}</p>`:`
+        <div class="choice-grid">
+          ${a.choices.map(c=>`<div class="cc-card ${a.picked_choice?.text===c.text?'picked':''}" style="background:${c.color}" onclick="doPick(${a.id},'${JSON.stringify(c).replace(/"/g,'&quot;')}')">
+            <div class="cc-check">✓</div>
+            <span class="cc-emoji">${c.emoji}</span>
+            <span class="cc-label">${c.text}</span>
+          </div>`).join('')}
+        </div>`}
+      <div style="text-align:center"><button class="abtn" onclick="freeChoiceId=null;renderChildScreen()">${t('cancel')}</button></div>
+    </div>
+  </div>`;
+}
+
+async function doPick(actId,choiceJson){
+  const choice=JSON.parse(choiceJson.replace(/&quot;/g,'"'));
+  await PUT(`/api/activities/${actId}`,{picked_choice:choice});
+  freeChoiceId=null;sndPick();renderChildScreen();
+}
+
+async function childToggle(id){
+  const cw=await GET(`/api/weeks/active?kid_id=${childKid}&mode=${activeMode}`);
+  if(!cw)return;
+  const sc=await GET(`/api/activities?week_id=${cw.id}&day_index=${activeDay}`);
+  const a=sc.find(x=>x.id===id);if(!a)return;
+  if(isDayLocked(activeDay,true))return;
+  if(a.is_free&&!a.picked_choice&&!a.done){freeChoiceId=id;renderChildScreen();return;}
+  await PUT(`/api/activities/${id}`,{done:!a.done});
+  if(!a.done){
+    if(a.points>0)cel(a.points);
+    sndOk();
+    await loadPoints();
+    const updated=await GET(`/api/activities?week_id=${cw.id}&day_index=${activeDay}`);
+    if(updated.every(x=>x.done)){sndWin();setTimeout(showChildBanner,200);}
+  }
+  renderChildScreen();
+}
+
+function showChildBanner(){
+  const kid=kids.find(k=>k.id===childKid);
+  const b=document.getElementById('rwBannerChild');
+  if(b){b.innerHTML=`<div class="rw-txt">🏆 ${lang==='ar'?`أحسنت يا ${kn(kid)}! 🎉`:`Great job ${kn(kid)}! 🎉`}</div>`;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),5000);}
+}
+
+// ════ KIDS ROW ════
+function kidsRowHTML(activeId, clickFn){
+  return `<div class="kids-row">
+    ${kids.map(k=>`<div class="kid-card ${k.id===activeId?'active':''}" style="border-color:${k.id===activeId?k.color:'#FFE4C4'};background:${k.id===activeId?k.bg:'#fff'}" onclick="${clickFn}(${k.id})">
+      <div class="k-av" style="border-color:${k.color};background:${k.bg}">${k.photo?`<img src="${k.photo}">`:`<span>${k.avatar}</span>`}</div>
+      <div class="k-name">${kn(k)}</div>
+      <div class="k-pts">⭐ ${points[k.id]||0}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ════ MODAL ════
+function showModal(html){closeModal();const el=document.createElement('div');el.className='modal-overlay';el.id='mainModal';el.innerHTML=`<div class="modal-sheet">${html}</div>`;el.addEventListener('click',e=>{if(e.target===el)closeModal();});document.body.appendChild(el);}
+function closeModal(){document.getElementById('mainModal')?.remove();}
+
+// ════ START ════
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
